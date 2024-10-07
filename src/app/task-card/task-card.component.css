@@ -1,0 +1,38 @@
+.task-card{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    color: black;
+    min-height: 40px;
+    height: auto;
+    line-height: 40px;
+    text-align: start;
+    padding: 2px 10px 2px 10px;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    align-items: center;
+    display: flex;
+}
+.delete-task-btn{
+    color:red;
+    font-weight: bolder;
+    background-color: white;
+    border: 3px solid red;
+    border-radius: 5px;
+    line-height: 20px;
+    height:30px;
+    aspect-ratio: 1;
+    text-align: center;
+    cursor: pointer;
+}
+.delete-task-btn:hover{
+    background-color: rgb(255, 245, 247);
+}
+.delete-task-btn:active{
+    background-color: rgb(255, 226, 231);
+}
+.description-container{
+    max-width: 90%;
+    display: inline-block;
+    line-height: 25px;
+    overflow-wrap: break-word;
+}
