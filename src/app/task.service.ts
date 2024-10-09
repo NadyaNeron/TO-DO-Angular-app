@@ -21,11 +21,10 @@ export class TaskService{
         return this.tasks().find(t => t.id === id)
     }
     addTask(description:string): void {
-        const id = Math.max(...this.tasks().map(t => t.id)) + 1
+        const id = this.tasks().length? Math.max(...this.tasks().map(t => t.id)) + 1 : 0
         this.tasks.update(list => [...list, {id:id, description:description}])
     }
     removeTask(id:number): void {
         this.tasks.update(list => [...list.filter(t => t.id !== id)])
-        // console.log(this.tasks())
     }
 }
