@@ -1,19 +1,14 @@
 import {Component} from '@angular/core';
-import { AddBarComponent } from "./add-bar/add-bar.component";
-import { TaskListComponent } from "./task-list/task-list.component";
+import { AddBarComponent } from "./add-bar/add.bar.component";
+import { TaskListComponent } from "./task-list/task.list.component";
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AddBarComponent, TaskListComponent],
+  imports: [AddBarComponent, TaskListComponent, RouterModule],
   template: `
     <main class="body">
-      <header class="brand-name">
-        MY TO-DO APP
-      </header>
-      <section class="content">
-        <app-add-bar></app-add-bar>
-        <app-task-list></app-task-list>
-      </section>
+      <router-outlet></router-outlet>
     </main>
   `,
   styleUrls: ['./app.component.css'],

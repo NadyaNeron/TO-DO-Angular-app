@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { TaskService } from '../task-service';
+import { TaskService } from '../task.service';
 
 @Component({
   selector: 'app-add-bar',
@@ -15,14 +15,14 @@ import { TaskService } from '../task-service';
     </section>
   `,
   styles: ``,
-  styleUrl: "./add-bar.component.css",
+  styleUrl: "./add.bar.component.scss",
 })
 export class AddBarComponent {
-  taskService = inject (TaskService) 
-  addTask(add:HTMLInputElement, e:Event):void{
+  public taskService = inject(TaskService) 
+  public addTask(add:HTMLInputElement, e:Event): void {
     e.preventDefault()
     if(add.value === "") return
     this.taskService.addTask(add.value)
-    add.value=""
+    add.value = ""
   }
 }

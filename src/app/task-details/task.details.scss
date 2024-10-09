@@ -1,18 +1,21 @@
-.task-list-container{
+.container{
     justify-content: center;
     display: flex;
-    padding: 50px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     width: 100%;
 }
-.task-list{
-    color: grey;
-    text-align: center;
+.description{
+    text-align: start;
     border: 3px solid var(--primary-color);
-    min-height: 100px;
+    min-height: 50px;
     height: auto;
-    line-height: 100px;
+    line-height: 20px;
     width: 50%;
     background-color: white;
+    color:black;
     border-radius: 7px;
     padding: 7px 7px 0px 7px;
+    display: inline-block;
+    line-height: 25px;
+    overflow-wrap: break-word;
 }

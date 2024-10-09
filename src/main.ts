@@ -4,7 +4,8 @@
  */
 import {bootstrapApplication, provideProtractorTestingSupport} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
+import { appConfig } from './app/app.config';
 
-bootstrapApplication(AppComponent, {providers: [provideProtractorTestingSupport()]}).catch((err) =>
+bootstrapApplication(AppComponent, {providers: [appConfig.providers]}).catch((err) =>
   console.error(err),
 );

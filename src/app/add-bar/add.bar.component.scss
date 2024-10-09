@@ -1,7 +1,6 @@
 .task-input-section{
     display: flex;
     justify-content: center;
-    padding-top: 10px;
     width:100%
 }
 .task-input-container{
@@ -18,13 +17,14 @@
     border-radius: 7px;
     line-height: 50px;
     padding-left: 1%;
-}
-.task-input:active{
-    border: 3px solid var(--secondary-color) !important;
-}
-.task-input:focus{
-    border: 3px solid var(--secondary-color) !important;
-    outline: none;
+
+    &-:active{
+        border: 3px solid var(--secondary-color) !important;
+    }
+    &-:focus{
+        border: 3px solid var(--secondary-color) !important;
+        outline: none;
+    }
 }
 .add-button{
     background-color: var(--primary-color);
@@ -34,7 +34,8 @@
     padding: 1%;
     width: 13%;
     cursor: pointer;
-}
-.add-button:hover{
-    background-color: var(--secondary-color);
+
+    &-:hover{
+        background-color: var(--secondary-color);
+    }
 }
