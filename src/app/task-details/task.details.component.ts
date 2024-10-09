@@ -15,11 +15,11 @@ import { TaskService } from '../task.service';
         <div class="delete-btn"></div>
       </div>
   `,
-  styleUrl: `./task.details.scss`
+  styleUrl: `./task.details.component.scss`
 })
 export class TaskDetailsComponent {
   public task: Task|undefined
-  public taskService = inject(TaskService)
+  public taskService:TaskService = inject(TaskService)
 
   constructor(private route: ActivatedRoute) {
     const taskId = Number(this.route.snapshot.paramMap.get('id'))

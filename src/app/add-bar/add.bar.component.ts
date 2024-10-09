@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { TaskService } from '../task.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-bar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <section class="task-input-section">
-      <form class="task-input-container">
-        <input type="text" class="task-input" placeholder="Введите задачу..." (keydown.enter)="addTask(add, $event)" #add/>
-        <button class="add-button" type="button" (click)="addTask(add, $event)">Добавить</button>
+      <form class="task-input-container" (ngSubmit)="addTask($event)">
+        <input type="text" class="task-input" placeholder="Введите задачу..." [(ngModel)]="description" [ngModelOptions]="{standalone: true}" />
+        <button class="add-button" type="button" (click)="addTask($event)">Добавить</button>
       </form>
     </section>
   `,
@@ -19,10 +20,11 @@ import { TaskService } from '../task.service';
 })
 export class AddBarComponent {
   public taskService = inject(TaskService) 
-  public addTask(add:HTMLInputElement, e:Event): void {
+  public description:string = ""
+  public addTask(e:Event): void {
     e.preventDefault()
-    if(add.value === "") return
-    this.taskService.addTask(add.value)
-    add.value = ""
+    if(this.description === "") return
+    this.taskService.addTask(this.description)
+    this.description = ""
   }
 }
