@@ -12,18 +12,15 @@ import { Task } from '../tasks';
   template: `
     <section class="task-list-container">
       <div class="task-list">
-        <div *ngIf="taskService.getTaskList().length; else noDataText">
+        @for(task of taskService.getTaskList(); track task.id){
           <app-task-card 
-            (removeEvent)="handleEvent($event)"
-            *ngFor="let task of taskService.getTaskList()" 
-            [task]="task"
-            (click)="handleClick(task.id)"
-          ></app-task-card>
-        </div>
-
-        <ng-template #noDataText>
+          (removeEvent)="handleEvent($event)"
+          [task]="task"
+          (click)="handleClick(task.id)"
+        ></app-task-card> 
+        }@empty {
           Тут пока пусто
-        </ng-template>
+        }
       </div>
     </section>
   `,
@@ -32,9 +29,7 @@ import { Task } from '../tasks';
 
 export class TaskListComponent {
   public taskService: TaskService = inject(TaskService);
-  // public removeTask(): void {
-  //   this.taskService.removeTask(this.task().id)
-  // }
+  
   constructor(private router:Router, private route: ActivatedRoute){}
   public handleClick(id: number){
     this.router.navigate(['./', id], {relativeTo:this.route})
