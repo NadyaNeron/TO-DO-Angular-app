@@ -32,4 +32,8 @@ export class TaskService{
     removeTask(id:number): void {
         this.tasks.update(list => [...list.filter(t => t.id !== id)])
     }
+    updateTask(id:number, description:string){
+        const newList = this.tasks().map(t => t.id === id? {id:t.id, description:description} : t)
+        this.tasks.set(newList)
+    }
 }
