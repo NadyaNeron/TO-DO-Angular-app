@@ -45,6 +45,6 @@ export class TaskDetailsComponent {
   public removeTask(){
     const taskId = Number(this.route.snapshot.paramMap.get('id'))
     this.taskService.removeTask(taskId)
-    this.router.navigate(["/add-tasks"])
+    this.router.navigate(["/tasks"])
   }
 }
