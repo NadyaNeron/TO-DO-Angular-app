@@ -12,8 +12,8 @@ import { RouterModule } from '@angular/router';
           MY TO-DO APP
         </header>
         <nav>
-          <a routerLink="/add-tasks" routerLinkActive="active" ariaCurrentWhenActive="page">Добавить задачу</a>
-          <a routerLink="/tasks" routerLinkActive="active" ariaCurrentWhenActive="page">Задачи</a>
+          <a [routerLink]="['/tasks/add-tasks']" routerLinkActive="active" ariaCurrentWhenActive="page">Добавить задачу</a>
+          <a [routerLink]="['/tasks']" routerLinkActive="active" ariaCurrentWhenActive="page">Задачи</a>
         </nav>
       <div>
       <section class="content">

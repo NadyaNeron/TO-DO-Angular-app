@@ -8,10 +8,24 @@ import { LayoutComponent } from './layout/layout.component';
 import { TaskDetailsComponent } from './task-details/task.details.component';
 
 const routes: Routes = [
-  { path: 'add-tasks', component: LayoutComponent, children:[{path: '', component: AddBarComponent }], },
-  { path: 'tasks', component: LayoutComponent, children:[{path: '', component: TaskListComponent }] },
-  { path: 'task/:id', component: LayoutComponent, children:[{path: '', component: TaskDetailsComponent}]},
-  { path: '',   redirectTo: '/add-tasks', pathMatch: 'full' },
+  { path: '',   redirectTo: '/tasks', pathMatch: 'full' },
+  { 
+    path: 'tasks', 
+    component: LayoutComponent, 
+    children:[
+      {
+        path: '', 
+        component: TaskListComponent 
+      },
+      {
+        path: 'add-tasks',
+        component: AddBarComponent
+      },
+      {
+        path: ":id",
+        component: TaskDetailsComponent
+      }
+    ] }
 ];
 
 export const appConfig: ApplicationConfig = {

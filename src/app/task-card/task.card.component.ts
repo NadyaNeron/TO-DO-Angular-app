@@ -1,7 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { Task } from '../tasks';
 import { TaskService } from '../task.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task-card',
@@ -22,8 +22,8 @@ export class TaskCardComponent{
   public removeTask(): void {
     this.taskService.removeTask(this.task().id)
   }
-  constructor(private router:Router){}
+  constructor(private router:Router, private route: ActivatedRoute){}
   public goToTaskPage(){
-    this.router.navigate(['/task', this.task().id])
+    this.router.navigate(['./', this.task().id], {relativeTo:this.route})
   }
 }
