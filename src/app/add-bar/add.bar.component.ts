@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TaskService } from '../task.service';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +10,14 @@ import { FormsModule } from '@angular/forms';
   template: `
     <section class="task-input-section">
       <form class="task-input-container" (ngSubmit)="addTask($event)">
-        <input type="text" class="task-input" placeholder="Введите задачу..." [(ngModel)]="description" [ngModelOptions]="{standalone: true}" />
+        <input 
+          type="text" 
+          class="task-input" 
+          placeholder="Введите задачу..." 
+          [(ngModel)]="description" 
+          [ngModelOptions]="{standalone: true}" 
+          (ngModelChange)="description()"
+        />
         <button class="add-button" type="button" (click)="addTask($event)">Добавить</button>
       </form>
     </section>
@@ -19,12 +26,12 @@ import { FormsModule } from '@angular/forms';
   styleUrl: "./add.bar.component.scss",
 })
 export class AddBarComponent {
-  public taskService = inject(TaskService) 
-  public description:string = ""
+  public taskService = inject(TaskService)
+  public description = signal("") 
   public addTask(e:Event): void {
     e.preventDefault()
-    if(this.description === "") return
-    this.taskService.addTask(this.description)
-    this.description = ""
+    if(this.description() === "") return
+    this.taskService.addTask(this.description())
+    this.description.set("")
   }
 }
