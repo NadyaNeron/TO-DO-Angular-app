@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
           placeholder="Введите задачу..." 
           [(ngModel)]="description" 
           [ngModelOptions]="{standalone: true}" 
-          (ngModelChange)="description()"
         />
         <button class="add-button" type="button" (click)="addTask($event)">Добавить</button>
       </form>

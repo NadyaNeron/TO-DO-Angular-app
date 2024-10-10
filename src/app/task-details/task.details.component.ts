@@ -1,8 +1,10 @@
-import { Component, effect, inject, signal} from '@angular/core';
+import { Component, effect, inject, signal, untracked} from '@angular/core';
 import { Task } from '../tasks';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { FormsModule } from '@angular/forms';
+import { toObservable, toSignal} from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-task-details',
@@ -17,7 +19,6 @@ import { FormsModule } from '@angular/forms';
               class="description-input" 
               as="textarea" 
               [(ngModel)]="description" 
-              (ngModelChange)="setDescription()"
               ngDefaultControl>
             </textarea>
           </div>
@@ -33,6 +34,8 @@ export class TaskDetailsComponent {
   public taskService:TaskService = inject(TaskService)
   public description = signal("")
   public taskId = -1
+  updatedDescription = toSignal(toObservable(this.description).pipe(debounceTime(100)));
+
 
   constructor(private route: ActivatedRoute, private router:Router) {
     this.taskId = Number(this.route.snapshot.paramMap.get('id'))
@@ -43,6 +46,13 @@ export class TaskDetailsComponent {
     else{
       this.description.set(task.description)
     }
+    effect(() => {
+      console.log("effected")
+      const updatedDescription = this.updatedDescription()
+      untracked(() => {
+        this.setDescription(updatedDescription)
+      })
+    })
   }
 
 
@@ -51,7 +61,8 @@ export class TaskDetailsComponent {
     this.taskService.removeTask(taskId)
     this.router.navigate(["/tasks"])
   }
-  public setDescription(){
-    this.taskService.updateTask(this.taskId, this.description())
+  public setDescription(description: string | undefined){
+    if(!description) return;
+    this.taskService.updateTask(this.taskId, description)
   }
 }
