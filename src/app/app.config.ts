@@ -8,7 +8,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { TaskDetailsComponent } from './task-details/task.details.component';
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/tasks', pathMatch: 'full' },
+  { path: '',   redirectTo: 'tasks', pathMatch: 'full' },
   { 
     path: 'tasks', 
     component: LayoutComponent, 
