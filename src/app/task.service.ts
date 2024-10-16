@@ -1,14 +1,15 @@
-import { Injectable, WritableSignal, computed, signal } from "@angular/core";
+import { Injectable, computed, signal } from "@angular/core";
 import { Task } from "./tasks";
 
 @Injectable({
     providedIn:"root"
 })
 export class TaskService{
-    public tasks:  WritableSignal<Task[]> = signal([
+    public tasks = signal([
         {
             id: 0,
-            description: "My task example"
+            name: "Me task example name",
+            description: "My task example description"
         }
     ])
     public maxId = computed(() => {
@@ -25,15 +26,15 @@ export class TaskService{
     getTaskById(id:number){
         return this.tasks().find(t => t.id === id)
     }
-    addTask(description:string): void {
+    addTask(task:Task): void {
         const id = this.maxId() + 1
-        this.tasks.update(list => [...list, {id:id, description:description}])
+        this.tasks.update(list => [...list, {id:id, name:task.name, description:task.description}])
     }
     removeTask(id:number): void {
         this.tasks.update(list => [...list.filter(t => t.id !== id)])
     }
-    updateTask(id:number, description:string){
-        const newList = this.tasks().map(t => t.id === id? {id:t.id, description:description} : t)
+    updateTask(task:Task){
+        const newList = this.tasks().map(t => t.id === task.id? {id:t.id, name:task.name, description:task.description} : t)
         this.tasks.set(newList)
     }
 }

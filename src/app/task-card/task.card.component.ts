@@ -8,7 +8,7 @@ import {  RouterModule } from '@angular/router';
   imports: [RouterModule],
   template: `
     <div class="task-card">
-      <p class="description-container">{{task().description}}</p>
+      <p class="description-container">{{task().name}}</p>
       <button class="delete-task-btn" (click)="onDeleteButtonClick()">X</button>
     </div>
   `,

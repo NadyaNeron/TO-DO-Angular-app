@@ -1,16 +1,17 @@
 import { Component, DestroyRef, OnInit, inject, signal} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
-import { FormsModule } from '@angular/forms';
-import { takeUntilDestroyed, toObservable, toSignal} from '@angular/core/rxjs-interop';
+import { FormGroup, FormsModule } from '@angular/forms';
+import { takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import { debounceTime, skip } from 'rxjs';
+import { TaskFormComponent } from "../task-form/task.form.component";
 
 @Component({
   selector: 'app-task-details',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TaskFormComponent],
   template: `
-    <div class="content">
+    <!-- <div class="content">
       <div class="description">
         <textarea 
           type="textarea" 
@@ -23,7 +24,8 @@ import { debounceTime, skip } from 'rxjs';
       <div class="delete-btn-container">
       <button class="delete-btn" (click)="removeTask()">X</button>  
       </div>
-    </div>
+    </div> -->
+    <app-task-form [type]="'edit'" (remove)="removeTask()" (save)="setDescription($event)"></app-task-form>
   `,
   styleUrl: `./task.details.component.scss`
 })
@@ -35,13 +37,13 @@ export class TaskDetailsComponent implements OnInit{
 
 
   constructor(private route: ActivatedRoute, private router:Router) {
-    toObservable(this.description)
-    .pipe(
-      takeUntilDestroyed(this.destroyRef),
-      skip(1),
-      debounceTime(500)
-    )
-    .subscribe((description) =>  this.setDescription(description))
+    // toObservable(this.description)
+    // .pipe(
+    //   takeUntilDestroyed(this.destroyRef),
+    //   skip(1),
+    //   debounceTime(500)
+    // )
+    // .subscribe((description) =>  this.setDescription(description))
 
   }
 
@@ -67,8 +69,8 @@ export class TaskDetailsComponent implements OnInit{
     this.taskService.removeTask(this.taskId)
     this.router.navigate(["/tasks"])
   }
-  public setDescription(description: string | undefined){
-    if(!description) return;
-    this.taskService.updateTask(this.taskId, description)
+  public setDescription(e: FormGroup){
+    this.taskService.updateTask({id:this.taskId, name:e.value.name, description:e.value.description})
+    this.router.navigate(["/tasks"])
   }
 }

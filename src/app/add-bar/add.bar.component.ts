@@ -1,25 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { TaskService } from '../task.service';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
+import { TaskFormComponent } from "../task-form/task.form.component";
 
 @Component({
   selector: 'app-add-bar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TaskFormComponent],
   template: `
-    <section class="task-input-section">
-      <form class="task-input-container" (ngSubmit)="addTask($event)">
-        <input 
-          type="text" 
-          class="task-input" 
-          placeholder="Введите задачу..." 
-          [(ngModel)]="description" 
-          [ngModelOptions]="{standalone: true}" 
-        />
-        <button class="add-button" type="button" (click)="addTask($event)">Добавить</button>
-      </form>
-    </section>
+    <app-task-form (save)="addTask($event)" [type]="'add'" formGroupName="taskForm" #taskForm></app-task-form>
   `,
   styles: ``,
   styleUrl: "./add.bar.component.scss",
@@ -27,10 +17,10 @@ import { FormsModule } from '@angular/forms';
 export class AddBarComponent {
   public taskService = inject(TaskService)
   public description = signal("") 
-  public addTask(e:Event): void {
-    e.preventDefault()
-    if(this.description() === "") return
-    this.taskService.addTask(this.description())
-    this.description.set("")
+
+  addTask(e:FormGroup): void {
+    console.log(e.value)
+    this.taskService.addTask(e.value)
+    e.setValue({name:'', description:''})
   }
 }
