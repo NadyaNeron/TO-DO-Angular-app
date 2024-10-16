@@ -4,21 +4,23 @@ import { CommonModule } from '@angular/common';
 import { TaskService } from '../task.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskFormComponent } from "../task-form/task.form.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskCardComponent, TaskFormComponent],
+  imports: [CommonModule, TaskCardComponent, TaskFormComponent, FormsModule],
   template: `
     <section class="task-list-container">
       <div class="task-list">
         @for(task of taskService.getTaskList(); track task.id) {
-          <app-task-card 
-          (removeEvent)="handleEvent($event)"
-          [task]="task"
+        <app-task-form 
+          [ngModel]="{name:task.name, description: task.description}" 
+          (ngModelChange)="onTaskChange($event)"
+          [readonly]="true"
+          [ngModelOptions]="{standalone: true}"
           (click)="handleClick(task.id)"
-        ></app-task-card> 
-        <!-- <app-task-form [type]="'view'"></app-task-form> -->
+        ></app-task-form>
         }@empty {
           Тут пока пусто
         }
@@ -37,5 +39,9 @@ export class TaskListComponent {
   }
   public handleEvent(id: number){
     this.taskService.removeTask(id)
+  }
+
+  public onTaskChange(val: any) {
+    console.log(val);
   }
 }

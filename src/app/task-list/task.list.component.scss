@@ -2,14 +2,14 @@
 .task-list{
     color: grey;
     text-align: center;
-    border: 3px solid var(--primary-color);
+    // border: 3px solid var(--primary-color);
     min-height: 100px;
     height: auto;
     line-height: 100px;
-    width: 50%;
-    background-color: white;
-    border-radius: 7px;
-    padding: 7px 7px 0px 7px;
+    width: 1000%;
+    // background-color: white;
+    // border-radius: 7px;
+    // padding: 7px 7px 0px 7px;
 
     &-container{
         justify-content: center;

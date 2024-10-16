@@ -26,9 +26,9 @@ export class TaskService{
     getTaskById(id:number){
         return this.tasks().find(t => t.id === id)
     }
-    addTask(task:Task): void {
+    addTask(name:string, description:string): void {
         const id = this.maxId() + 1
-        this.tasks.update(list => [...list, {id:id, name:task.name, description:task.description}])
+        this.tasks.update(list => [...list, {id:id, name:name, description:description}])
     }
     removeTask(id:number): void {
         this.tasks.update(list => [...list.filter(t => t.id !== id)])

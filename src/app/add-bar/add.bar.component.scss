@@ -1,1 +1,17 @@
 
+.add-button{
+    border: none;
+    border-radius: 7px;
+    color:white;
+    padding: 1%;
+    width: 10%;
+    height: 40px;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 7px;
+
+    background-color: var(--primary-color);
+    &:hover{
+        background-color: var(--secondary-color);
+    }
+}

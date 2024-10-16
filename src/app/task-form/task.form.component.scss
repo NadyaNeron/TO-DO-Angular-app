@@ -5,11 +5,12 @@
     border: 3px solid var(--primary-color);
     min-height: 100px;
     width: 55%;
-    padding: 6px 10px 6px 10px;
+    padding: 8px 10px 3px 10px;
     background-color: white;
     border-radius: 7px;
     height: auto;
-    margin-bottom: 7px;
+    margin-bottom: 30px;
+
 }
 :host{
     width: 100%;
@@ -25,7 +26,7 @@
     line-height: 50px;
     padding-left: 1%;
     resize: vertical;
-
+    cursor: --var(readonle);
 
     &:active{
         border: 3px solid var(--secondary-color) !important;
@@ -34,19 +35,21 @@
         border: 3px solid var(--secondary-color) !important;
         outline: none;
     }
+    &:disabled{
+        color:black
+    }
     &-description{
         display: flex;
         line-height:20px;
         padding-top: 10px;
-        height: 30px;
         min-height: 30px;
+        height: auto;
         width: 100%;
         margin-top: 6px;
         margin-bottom: 6px;
         border: 3px solid var(--primary-color);
         border-radius: 7px;
         padding-left: 1%;
-        resize: vertical;
         font-family: Arial, Helvetica, sans-serif;
         &:active{
             border: 3px solid var(--secondary-color) !important;
@@ -55,38 +58,11 @@
             border: 3px solid var(--secondary-color) !important;
             outline: none;
         }
+        &:disabled{
+            color:black
+        }
     }
 }
-
-.add-button{
-    border: none;
-    border-radius: 7px;
-    color:white;
-    padding: 1%;
-    width: 13%;
-    cursor: pointer;
-    margin-right: 7px;
-
-    background-color: var(--primary-color);
-    &:hover{
-        background-color: var(--secondary-color);
-    }
-}
-
-.remove-button{
-    border: none;
-    border-radius: 7px;
-    color:white ;
-    padding: 1%;
-    width: 13%;
-    cursor: pointer;
-
-    background-color: rgb(255, 64, 64) ;
-    &:hover{
-        background-color: rgb(213, 49, 49);
-    }
-}
-
 .button-container{
     width: 100%;
 }

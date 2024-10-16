@@ -1,17 +1,28 @@
-import { Component, forwardRef, input, output } from '@angular/core';
+import { Component, DestroyRef, forwardRef, inject, input, output } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Task } from '../tasks';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+type WithNull<T extends Record<string, any>> = {
+  [KEY in keyof T]: T[KEY] | null;
+}
+
+export type TaskWithoutId = Partial<WithNull<Omit<Task, 'id'>>>
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
   imports: [ReactiveFormsModule],
   template: `
-      <form class="container" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-        <input 
+      <form class="container" [formGroup]="taskForm">
+        <input
+          tabindex="1"
           type="text" 
           class="task-input" 
           placeholder="Название задачи" 
           formControlName="name"
+          [readOnly]="readonly()"
+          style="cursor: {{readonly()?'pointer':'text'}};"
         />
         @if(!taskForm.get("name")?.valid && taskForm.get("name")?.dirty){
           <div 
@@ -21,19 +32,14 @@ import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Reacti
           </div>
         }
         <textarea
+          tabindex="2"
           type="text"
           class="task-input-description" 
           placeholder="Описание задачи"
           formControlName="description"
+          [readOnly]="readonly()"
+          style="cursor: {{readonly()?'pointer':'text'}}; resize:{{readonly()?'none':'vertical'}}"
         ></textarea>
-        @if(!taskForm.disabled && type() === "add"){
-          <button class="add-button" type="button" (click)="onSubmit()">Добавить</button>
-        } @else if (!taskForm.disabled && type() === "edit"){
-          <div class="button-container">
-            <button class="add-button" type="button" disabled="!taskForm.valid" (click)="onSubmit()">Сохранить</button>
-            <button class="remove-button" type="button"  (click)="onRemove()">Удалить</button>
-          </div>
-        }
       </form>
   `,
   styleUrl: `./task.form.component.scss`,
@@ -52,32 +58,44 @@ export class TaskFormComponent implements ControlValueAccessor{
     name: new FormControl('', Validators.required),
     description: new FormControl('')
   })
-  public save = output<FormGroup>()
-  public remove = output<FormGroup>()
-  public type = input.required<string>()
+  public readonly = input<boolean>(false)
+  private onChanges!: (value: TaskWithoutId) => void;
+  private onTouches!: () => void
+
+  private destroyRef = inject(DestroyRef)
+
   constructor(){
-    this.taskForm.valueChanges.subscribe((val)=>{console.log(val)})
+    this.taskForm.valueChanges
+    .pipe(
+      takeUntilDestroyed(this.destroyRef)
+    )
+    .subscribe((val)=> {
+      this.onChanges(val);
+    })
   }
   
   writeValue(outsideValue: any): void {
     console.log(outsideValue)
-    this.taskForm.setValue(outsideValue)
+    if (!outsideValue){
+      this.taskForm.setValue({name: '', description:''}, { emitEvent: false })
+    }
+    else this.taskForm.setValue(outsideValue, { emitEvent: false })
+    //проверка на null\undefined
   }
-  registerOnChange(fn: any): void {
-    throw new Error('Method not implemented.');
+  registerOnChange(fn: (value: TaskWithoutId) => void): void {
+    console.log("changed")
+    this.onChanges = (value: TaskWithoutId) => {
+      fn(structuredClone(value));
+    }
   }
-  registerOnTouched(fn: any): void {
-    throw new Error('Method not implemented.');
+  registerOnTouched(fn: () => void): void {
+    console.log("touched")
+    this.onTouches = () => {
+      fn()
+    }
   }
   setDisabledState?(isDisabled: boolean): void {
-    isDisabled? this.taskForm.disable() : this.taskForm.enable()
-  }
-  onSubmit(){
-    console.log(this.taskForm.value)
-    this.save.emit(this.taskForm)
-    this.taskForm.markAsUntouched()
-  }
-  onRemove(){
-    this.remove.emit(this.taskForm)
+    // isDisabled? this.taskForm.disable({ emitEvent: false }) : this.taskForm.enable({ emitEvent: false });
+    this.taskForm[isDisabled ? 'disable' : 'enable']({ emitEvent: false });
   }
 }
